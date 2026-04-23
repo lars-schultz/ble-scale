@@ -55,7 +55,10 @@ def notification_handler(sender, data):
     value = hex_segment_to_int(value)
     flags = hex_segment_to_int(flags)
 
-    value = value / 10
+    tenth = bool(flags & 16)
+
+    if tenth:
+        value = value / 10;
 
     stable = bool(flags & 8)
     negative = bool(flags & 2)
@@ -63,7 +66,7 @@ def notification_handler(sender, data):
 
     unit = UNITS.get(unit,unit);
 
-    print(f"{message} Einheit {unit} stable {stable} stable {negative} tara {tara} Wert {value}")
+    print(f"{message} Einheit {unit} / stable {stable} tenth {tenth}  negative {negative} tara {tara} Wert {value}")
 
     logdata['data']['unit'] = unit
     logdata['data']['value'] = value if not negative else -value
